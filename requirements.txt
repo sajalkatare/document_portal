@@ -1,0 +1,13 @@
+langchain
+python-dotenv
+langchain_groq
+langchain_google_genai
+langchain_community
+langchain-community
+langchain-huggingface
+sentence-transformers
+langchain-core
+structlog
+pypdf
+faiss-cpu
+-e .
