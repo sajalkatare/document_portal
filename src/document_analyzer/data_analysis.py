@@ -24,7 +24,7 @@ class DocumentAnalyzer:
             #self.fixing_parser = OutputFixingParser.from_llm(parser=self.parser, llm=self.llm)
             self.structured_llm = self.llm.with_structured_output(Metadata)
             
-            self.prompt = prompt
+            self.prompt = PROMPT_REGISTRY["document_analysis"]
             
             self.log.info("DocumentAnalyzer initialized successfully")
             

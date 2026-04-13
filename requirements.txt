@@ -10,4 +10,5 @@ langchain-core
 structlog
 pypdf
 faiss-cpu
+pandas
 -e .
