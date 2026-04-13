@@ -1,0 +1,28 @@
+faiss_db:
+  collection_name: "document_portal"
+
+embedding_model:
+  provider: "google"
+  model_name: "models/gemini-embedding-001"
+
+retriever:
+  top_k: 10
+
+llm:
+  groq:
+    provider: "groq"
+    model_name: "qwen/qwen3-32b"
+    temperature: 0
+    max_output_tokens: 2048
+
+  google:
+    provider: "google"
+    model_name: "gemini-2.5-flash-lite"
+    temperature: 0
+    max_output_tokens: 2048
+  
+  anthropic:
+    provider: "anthropic"
+    model_name: "claude-sonnet-4-5"
+    temperature: 0
+    max_output_tokens: 2048
