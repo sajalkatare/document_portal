@@ -5,10 +5,12 @@ from dotenv import load_dotenv
 from utils.config_loader import load_config
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 #from langchain_openai import ChatOpenAI
 from logger.custom_logger import CustomLogger
 from exception.custom_exception import DocumentPortalException
+from langchain_openai import OpenAIEmbeddings
 log = CustomLogger().get_logger(__name__)
 from langchain_anthropic import ChatAnthropic
 
@@ -30,7 +32,7 @@ class ModelLoader:
         Validate necessary environment variables.
         Ensure API keys exist.
         """
-        required_vars=["GOOGLE_API_KEY","GROQ_API_KEY","ANTHROPIC_API_KEY"]  # Add OPENAI_API_KEY if using OpenAI
+        required_vars=["GOOGLE_API_KEY","ANTHROPIC_API_KEY"]  # Add OPENAI_API_KEY if using OpenAI
         self.api_keys={key:os.getenv(key) for key in required_vars}
         missing = [k for k, v in self.api_keys.items() if not v]
         if missing:
@@ -45,7 +47,8 @@ class ModelLoader:
         try:
             log.info("Loading embedding model...")
             model_name = self.config["embedding_model"]["model_name"]
-            return GoogleGenerativeAIEmbeddings(model=model_name)
+            return OpenAIEmbeddings(model=model_name)
+            #return GoogleGenerativeAIEmbeddings(model=model_name)
         except Exception as e:
             log.error("Error loading embedding model", error=str(e))
             raise DocumentPortalException("Failed to load embedding model", sys)
@@ -60,7 +63,7 @@ class ModelLoader:
 
         log.info("Loading LLM...")
         
-        provider_key = os.getenv("LLM_PROVIDER", "groq")  # Default groq
+        provider_key = os.getenv("LLM_PROVIDER", "google")  # Default google
         if provider_key not in llm_block:
             log.error("LLM provider not found in config", provider_key=provider_key)
             raise ValueError(f"Provider '{provider_key}' not found in config")
@@ -80,15 +83,7 @@ class ModelLoader:
                 max_output_tokens=max_tokens
             )
             return llm
-
-        elif provider == "groq":
-            llm=ChatGroq(
-                model=model_name,
-                api_key=self.api_keys["GROQ_API_KEY"],
-                temperature=temperature,
-            )
-            return llm
-        
+       
         elif provider == "anthropic":
             llm=ChatAnthropic(
                 model=model_name,

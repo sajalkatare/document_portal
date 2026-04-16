@@ -11,4 +11,5 @@ structlog
 pypdf
 faiss-cpu
 pandas
+streamlit
 -e .
