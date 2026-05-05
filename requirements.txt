@@ -12,4 +12,5 @@ pypdf
 faiss-cpu
 pandas
 streamlit
+docx2txt
 -e .
