@@ -149,3 +149,5 @@ venv/
 env/
 .venv/
 sk_dp/
+
+archive/
